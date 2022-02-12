@@ -1,3 +1,18 @@
+/* Global ===================*/
+:root {
+  --primary-color: #2D4A22;
+  --bg-color: #f0f2f5;
+
+  --primary-text-color: #363F5F;
+  --secondary-text-color: #969cb3;
+  
+  --expense-text-color: #e92929;
+  --income-text-color: #12a454;
+
+  --bg-card: #FFF;
+  --bg-card-total: #49AA26;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,6 +20,120 @@
 }
 
 body {
-  background-color: #f0f2f5;
+  background-color: var(--bg-color);
   font-family: 'Poppins', sans-serif;
+}
+
+.container {
+  width: min(90vw, 800px);
+  margin: auto;
+}
+
+/* Titles ===================*/
+h2 {
+  margin-top: 3.2rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary-text-color);
+
+  font-weight: normal;
+}
+
+/* Header ===================*/
+header {
+  background-color: var(--primary-color);
+  padding: 2rem 0 10rem;
+  text-align: center;
+}
+
+#logo {
+  color: #FFF;
+  font-weight: 100;
+}
+
+/* Balance ===================*/
+#balance {
+  margin-top: -8rem;
+}
+
+#balance h2 {
+  color: white;
+  margin-top: 0;
+}
+
+/* Cards ===================*/
+.card {
+  background-color: var(--bg-card);
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  border-radius: 0.25rem;
+
+  color: var(--primary-text-color);
+}
+
+.card h3 {
+  font-weight: normal;
+  font-size: 1rem;
+}
+
+.card p {
+  font-size: 2rem;
+  line-height: 3rem;
+}
+
+.card.total {
+  background-color: var(--bg-card-total);
+  color: white;
+}
+
+/* Transaction ===================*/
+#data-table {
+  width: 100%;
+  border-spacing: 0 1.2rem;
+  color: var(--secondary-text-color);
+}
+
+table thead tr th:first-child,
+table tbody tr td:first-child {
+  border-radius: 0.25rem 0 0 0.25rem;
+}
+
+table th {
+  background-color: var(--bg-card);
+  font-weight: normal;
+  padding: 1rem 2rem;
+  text-align: left;
+}
+
+table tbody tr {
+  opacity: 0.7;
+}
+
+table tbody tr:hover {
+  opacity: 1;
+}
+
+table tbody td {
+  background-color: var(--bg-card);
+  padding: 1rem 2rem;
+}
+
+table tbody td.description {
+  color: var(--primary-text-color);
+}
+
+table tbody td.income {
+  color: var(--income-text-color);
+}
+
+table tbody td.expense {
+  color: var(--expense-text-color);
+}
+
+/* Footer ===================*/
+footer {
+  text-align: center;
+  padding: 4rem 0 2rem;
+  color: var(--primary-text-color);
+
+  opacity: 0.6;
 }

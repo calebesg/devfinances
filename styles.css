@@ -64,9 +64,42 @@ h2 {
   color:var(--bg-card-total);
 }
 
+button {
+  width: 48%;
+  height: 3.125rem;
+  color: var(--bg-card);
+  border: none;
+  border-radius: 0.25rem;
+  background-color: var(--income-text-color);
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+button:hover {
+  background-color: var(--bg-card-total);
+}
+
 .button.new {
   display: inline-block;
   margin-bottom: 1rem;
+}
+
+.button.cancel {
+  width: 48%;
+  height: 3.125rem;
+  color: var(--expense-text-color);
+  border: 2px solid var(--expense-text-color);
+  border-radius: 0.25rem;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: .6;
+  transition: .4s;
+}
+
+.button.cancel:hover {
+  opacity: 1;
 }
 
 /* Header ===================*/
@@ -168,6 +201,64 @@ table tbody td.income {
 table tbody td.expense {
   color: var(--expense-text-color);
 }
+
+/* Modal ===================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, .3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: all .4s;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal {
+  padding: 2rem;
+  background-color: var(--bg-color);
+  max-width: 31.65rem;
+  width: 90%;
+}
+
+.modal h2 {
+  margin: 0;
+}
+
+/* Form ====================== */
+form {
+  max-width: 31.65rem;
+}
+
+form .input-group input {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 0.25rem;
+  margin-top: 1rem;
+}
+
+.input-group small {
+  opacity: 0.4;
+}
+
+.input-group.actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 
 /* Footer ===================*/
 footer {

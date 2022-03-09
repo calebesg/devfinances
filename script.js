@@ -32,16 +32,34 @@ const transactions = [
 ];
 
 const Transaction = {
-  expenses() {
-    // calcular todas as despesas
+  all: transactions,
+
+  get expenses() {
+    let expenses = 0;
+
+    this.all.forEach(transaction => {
+      if (transaction.amount < 0) {
+        expenses += transaction.amount;
+      }
+    });
+
+    return expenses;
   },
 
-  incomes() {
-    // calcular todas as entradas
+  get incomes() {
+    let incomes = 0;
+
+    this.all.forEach(transaction => {
+      if (transaction.amount > 0) {
+        incomes += transaction.amount;
+      }
+    });
+
+    return incomes;
   },
 
   get total() {
-    // subtrair as despesas das entradas
+    return this.incomes + this.expenses;
   }
 }
 
@@ -51,13 +69,27 @@ const DOM = {
   addTransaction(transaction, index) {
     const tr = document.createElement('tr');
 
-    tr.innerHTML = this.innerHTMLTransaction(transaction);
+    tr.innerHTML = this._innerHTMLTransaction(transaction);
     tr.setAttribute('id', index);
 
     this.transactionsContainer.appendChild(tr);
   },
 
-  innerHTMLTransaction(transaction) {
+  updateDisplay() {
+    document
+      .getElementById('expenseDisplay')
+      .textContent = Util.formatCurrency(Transaction.expenses);
+
+    document
+      .getElementById('incomeDisplay')
+      .textContent = Util.formatCurrency(Transaction.incomes);
+      
+    document
+      .getElementById('totalDisplay')
+      .textContent = Util.formatCurrency(Transaction.total);
+  },
+
+  _innerHTMLTransaction(transaction) {
     const CSSclass = transaction.amount > 0 ? 'income' : 'expense';
 
     const amount = Util.formatCurrency(transaction.amount);
@@ -95,3 +127,5 @@ const Util = {
 transactions.forEach((transaction, index) => {
   DOM.addTransaction(transaction, index);
 });
+
+DOM.updateDisplay();

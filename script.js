@@ -2,11 +2,11 @@ const Modal = {
   classList: document.querySelector('.modal-overlay').classList,
 
   open() {
-    this.classList.add('active');
+    Modal.classList.add('active');
   },
 
   close() {
-    this.classList.remove('active');
+    Modal.classList.remove('active');
   }
 }
 
@@ -34,10 +34,20 @@ const transactions = [
 const Transaction = {
   all: transactions,
 
+  add(transaction) {
+    Transaction.all.push(transaction);
+    App.reload();
+  },
+
+  remove(index) {
+    Transaction.all.splice(index, 1);
+    App.reload();
+  },
+
   get expenses() {
     let expenses = 0;
 
-    this.all.forEach(transaction => {
+    Transaction.all.forEach(transaction => {
       if (transaction.amount < 0) {
         expenses += transaction.amount;
       }
@@ -49,7 +59,7 @@ const Transaction = {
   get incomes() {
     let incomes = 0;
 
-    this.all.forEach(transaction => {
+    Transaction.all.forEach(transaction => {
       if (transaction.amount > 0) {
         incomes += transaction.amount;
       }
@@ -59,12 +69,12 @@ const Transaction = {
   },
 
   get total() {
-    return this.incomes + this.expenses;
+    return Transaction.incomes + Transaction.expenses;
   }
 }
 
 const DOM = {
-  transactionsContainer: document.querySelector('#data-table tbody'),
+  _transactionsContainer: document.querySelector('#data-table tbody'),
   
   addTransaction(transaction, index) {
     const tr = document.createElement('tr');
@@ -72,27 +82,31 @@ const DOM = {
     tr.innerHTML = this._innerHTMLTransaction(transaction);
     tr.setAttribute('id', index);
 
-    this.transactionsContainer.appendChild(tr);
+    this._transactionsContainer.appendChild(tr);
   },
 
-  updateDisplay() {
+  updateBalance() {
     document
       .getElementById('expenseDisplay')
-      .textContent = Util.formatCurrency(Transaction.expenses);
+      .textContent = Utils.formatCurrency(Transaction.expenses);
 
     document
       .getElementById('incomeDisplay')
-      .textContent = Util.formatCurrency(Transaction.incomes);
+      .textContent = Utils.formatCurrency(Transaction.incomes);
       
     document
       .getElementById('totalDisplay')
-      .textContent = Util.formatCurrency(Transaction.total);
+      .textContent = Utils.formatCurrency(Transaction.total);
+  },
+
+  clearTransactions() {
+    this._transactionsContainer.innerHTML = '';
   },
 
   _innerHTMLTransaction(transaction) {
     const CSSclass = transaction.amount > 0 ? 'income' : 'expense';
 
-    const amount = Util.formatCurrency(transaction.amount);
+    const amount = Utils.formatCurrency(transaction.amount);
 
     const html = `
       <td class="description">${transaction.description}</td>
@@ -107,7 +121,19 @@ const DOM = {
   }
 }
 
-const Util = {
+const Utils = {
+  formatAmount(value) {
+    value = Number(value) * 100;
+
+    return value;
+  },
+
+  formatDate(date) {
+    date = date.split('-').reverse().join('/');
+
+    return date;
+  },
+
   formatCurrency(value) {
     const signal = Number(value) < 0 ? '-' : '';
 
@@ -124,8 +150,79 @@ const Util = {
   }
 }
 
-transactions.forEach((transaction, index) => {
-  DOM.addTransaction(transaction, index);
-});
+const Form = {
+  description: document.querySelector('input#description'),
+  amount: document.querySelector('input#amount'),
+  date: document.querySelector('input#date'),
+  
+  formatData() {
+    let { description, amount, date } = Form.dataForm;
 
-DOM.updateDisplay();
+    amount = Utils.formatAmount(amount);
+
+    date = Utils.formatDate(date);
+
+    return {
+      description,
+      amount,
+      date,
+    };
+  },
+
+  validateFields() {
+    const { description, amount, date } = Form.dataForm;
+
+    if (description === "" || amount === "" || date === "") {
+      throw new Error("Preencha todos os campos!");
+    }
+  },
+
+  clearFields() {
+    Form.description.value = '';
+    Form.amount.value = '';
+    Form.date.value = '';
+  },
+
+  submit(event) {
+    event.preventDefault();
+
+    try {
+      Form.validateFields();
+
+      const transaction = Form.formatData();
+      Transaction.add(transaction);
+
+      Form.clearFields();
+      Modal.close();
+
+    } catch(error) {
+      
+      alert(error.message);
+    }
+  },
+
+  get dataForm() {
+    return {
+      description: Form.description.value,
+      amount: Form.amount.value,
+      date: Form.date.value,
+    };
+  }
+}
+
+const App = {
+  init() {
+    transactions.forEach((transaction, index) => {
+      DOM.addTransaction(transaction, index);
+    });
+    
+    DOM.updateBalance();
+  },
+
+  reload() {
+    DOM.clearTransactions();
+    App.init();
+  }
+}
+
+App.init();

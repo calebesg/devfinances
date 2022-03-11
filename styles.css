@@ -1,6 +1,6 @@
 /* Global ===================*/
 :root {
-  --primary-color: #2D4A22;
+  --primary-color: #5527b8;
   --bg-color: #f0f2f5;
 
   --primary-text-color: #363F5F;
@@ -10,7 +10,7 @@
   --income-text-color: #12a454;
 
   --bg-card: #FFF;
-  --bg-card-total: #49AA26;
+  --bg-card-total: #29c236;
 }
 
 * {
@@ -137,6 +137,10 @@ header {
   justify-content: space-between;
 }
 
+.card img {
+  width: 1.5rem;
+}
+
 .card p {
   font-size: 2rem;
   line-height: 3rem;
@@ -202,6 +206,10 @@ table tbody td.expense {
   color: var(--expense-text-color);
 }
 
+table tbody td img {
+  width: 1.5rem;
+}
+
 /* Modal ===================== */
 .modal-overlay {
   position: fixed;
@@ -209,7 +217,7 @@ table tbody td.expense {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, .3);
+  background-color: rgba(13, 16, 26, .6);
   display: flex;
   justify-content: center;
   align-items: center;
